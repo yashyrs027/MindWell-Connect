@@ -79,7 +79,7 @@ const App: React.FC = () => {
         {userRole === 'admin' ? <Dashboard /> : renderUserContent()}
       </main>
       <footer className="text-center p-4 text-slate-500 text-sm border-t border-slate-200">
-        © 2024 MindWell Connect. Your well-being is our priority.
+        &copy; {new Date().getFullYear()} MindWell Connect. Your well-being is our priority.
       </footer>
     </div>
   );
