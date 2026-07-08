@@ -18,10 +18,13 @@ MindWell Connect is a mental wellness platform that provides AI-powered assistan
 ## 📦 Installation
 
 ```bash
+git clone <repository-url>
+cd <project-folder>
 npm install
 npm run dev
+```
 
-🔐 Environment Variables
+## 🔐 Environment Variables
 
 Create a .env.local file:
 VITE_GEMINI_API_KEY=your_api_key_here
