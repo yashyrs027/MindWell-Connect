@@ -8,6 +8,7 @@ import Forum from './components/Forum';
 import Dashboard from './components/Dashboard';
 import LoginPage from './components/LoginPage';
 import SignupPage from './components/SignupPage';
+import CrisisBanner from './components/CrisisBanner';
 import type { View, UserRole } from './types';
 
 type AuthView = 'login' | 'signup' | 'app';
@@ -76,6 +77,7 @@ const App: React.FC = () => {
         onLogout={handleLogout}
       />
       <main className="flex-grow container mx-auto p-4 sm:p-6 lg:p-8">
+        <CrisisBanner />
         {userRole === 'admin' ? <Dashboard /> : renderUserContent()}
       </main>
       <footer className="text-center p-4 text-slate-500 text-sm border-t border-slate-200">
