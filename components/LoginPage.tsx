@@ -10,10 +10,23 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigateToSignup }) =>
   const [role, setRole] = useState<'user' | 'admin'>('user');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+
+  const validate = () => {
+    const newErrors: { email?: string; password?: string } = {};
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) newErrors.email = 'Enter a valid email address.';
+    if (password.length < 8) newErrors.password = 'Password must be at least 8 characters.';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleLogin = () => {
-    // In a real app, you'd validate email and password here.
-    onLogin(role);
+    if (validate()) onLogin(role);
+  };
+
+  const clearError = (field: 'email' | 'password') => {
+    if (errors[field]) setErrors(prev => ({ ...prev, [field]: undefined }));
   };
 
   return (
@@ -46,22 +59,30 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigateToSignup }) =>
             </button>
           </div>
         
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow text-left"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow text-left"
-          />
+          <div>
+            <input
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => { setEmail(e.target.value); clearError('email'); }}
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? 'email-error' : undefined}
+              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow text-left ${errors.email ? 'border-red-400' : 'border-slate-300'}`}
+            />
+            {errors.email && <p id="email-error" className="text-red-500 text-xs mt-1 text-left">{errors.email}</p>}
+          </div>
+          <div>
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => { setPassword(e.target.value); clearError('password'); }}
+              aria-invalid={!!errors.password}
+              aria-describedby={errors.password ? 'password-error' : undefined}
+              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow text-left ${errors.password ? 'border-red-400' : 'border-slate-300'}`}
+            />
+            {errors.password && <p id="password-error" className="text-red-500 text-xs mt-1 text-left">{errors.password}</p>}
+          </div>
           <button
             type="submit"
             className="w-full bg-blue-500 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
