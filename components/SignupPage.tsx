@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import Card from './common/Card';
 
 interface SignupPageProps {
-  onSignup: () => void; // On successful signup, log in as user
+  onSignup: () => void;
   onNavigateToLogin: () => void;
+  onNavigateToLanding: () => void;
 }
 
-const SignupPage: React.FC<SignupPageProps> = ({ onSignup, onNavigateToLogin }) => {
+const SignupPage: React.FC<SignupPageProps> = ({ onSignup, onNavigateToLogin, onNavigateToLanding }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,6 +21,15 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup, onNavigateToLogin }) 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 via-slate-50 to-purple-100 p-4">
       <Card className="max-w-md w-full text-center p-8 lg:p-12 shadow-2xl animate-fade-in-up">
+        <button
+          onClick={onNavigateToLanding}
+          className="flex items-center gap-1 text-sm text-slate-500 hover:text-blue-600 transition-colors mb-4"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Home
+        </button>
         <div className="flex justify-center items-center gap-3 mb-4">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />

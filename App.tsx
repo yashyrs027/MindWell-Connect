@@ -8,14 +8,15 @@ import Forum from './components/Forum';
 import Dashboard from './components/Dashboard';
 import LoginPage from './components/LoginPage';
 import SignupPage from './components/SignupPage';
+import LandingPage from './components/LandingPage';
 import type { View, UserRole } from './types';
 
-type AuthView = 'login' | 'signup' | 'app';
+type AuthView = 'landing' | 'login' | 'signup' | 'app';
 
 const App: React.FC = () => {
   const [activeView, setActiveView] = useState<View>('home');
   const [userRole, setUserRole] = useState<UserRole>('guest');
-  const [authView, setAuthView] = useState<AuthView>('login');
+  const [authView, setAuthView] = useState<AuthView>('landing');
 
   const handleLogin = (role: 'user' | 'admin') => {
     setUserRole(role);
@@ -58,12 +59,16 @@ const App: React.FC = () => {
     }
   };
 
+  if (authView === 'landing') {
+    return <LandingPage onNavigateToLogin={() => setAuthView('login')} onNavigateToSignup={() => setAuthView('signup')} />;
+  }
+
   if (authView === 'login') {
-    return <LoginPage onLogin={handleLogin} onNavigateToSignup={() => setAuthView('signup')} />;
+    return <LoginPage onLogin={handleLogin} onNavigateToSignup={() => setAuthView('signup')} onNavigateToLanding={() => setAuthView('landing')} />;
   }
 
   if (authView === 'signup') {
-    return <SignupPage onSignup={handleSignup} onNavigateToLogin={() => setAuthView('login')} />;
+    return <SignupPage onSignup={handleSignup} onNavigateToLogin={() => setAuthView('login')} onNavigateToLanding={() => setAuthView('landing')} />;
   }
 
 
