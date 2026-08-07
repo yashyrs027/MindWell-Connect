@@ -56,6 +56,8 @@ const renderActiveShape = (props: any) => {
 };
 
 
+const PieAny = Pie as any;
+
 const Dashboard: React.FC = () => {
     const [activeIndex, setActiveIndex] = React.useState(0);
     const onPieEnter = (_: any, index: number) => {
@@ -90,7 +92,7 @@ const Dashboard: React.FC = () => {
                     <h3 className="font-bold text-lg text-slate-700 mb-4">Top Concerns (from AI Chat)</h3>
                     <ResponsiveContainer width="100%" height={300}>
                         <PieChart>
-                            <Pie
+                            <PieAny
                                 activeIndex={activeIndex}
                                 activeShape={renderActiveShape}
                                 data={concernData}
@@ -105,7 +107,7 @@ const Dashboard: React.FC = () => {
                                 {concernData.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))}
-                            </Pie>
+                            </PieAny>
                         </PieChart>
                     </ResponsiveContainer>
                 </Card>
