@@ -236,6 +236,51 @@ const PlatformInsights: React.FC = () => {
     </Card>
   );
 };
+// --- Ranked resource data with computed usage trend (% vs previous period) ---
+interface RankedResource extends ResourceDatum {
+  rank: number;
+  changePercent: number;
+}
+
+const getRankedResources = (): RankedResource[] => {
+  return [...resourceData]
+    .sort((a, b) => b.usage - a.usage)
+    .map((r, index) => ({
+      ...r,
+      rank: index + 1,
+      changePercent: r.previousUsage === 0
+        ? 0
+        : ((r.usage - r.previousUsage) / r.previousUsage) * 100,
+    }));
+};
+
+// --- Custom tooltip: shows views + trend, not just the raw bar value ---
+const ResourceTooltip: React.FC<any> = ({ active, payload }) => {
+  if (!active || !payload || !payload.length) return null;
+  const data: RankedResource = payload[0].payload;
+  const trendUp = data.changePercent >= 0;
+
+  return (
+    <div className="bg-white border border-slate-200 rounded-lg shadow-lg px-4 py-3 text-sm">
+      <p className="font-bold text-slate-800">{data.name}</p>
+      <p className="text-slate-600 mt-1">{data.usage.toLocaleString()} views</p>
+      <p className={`mt-1 font-semibold ${trendUp ? 'text-green-600' : 'text-red-600'}`}>
+        {trendUp ? '▲' : '▼'} {Math.abs(data.changePercent).toFixed(1)}% vs previous period
+      </p>
+      <p className="text-slate-400 text-xs mt-1">Rank #{data.rank} of {resourceData.length}</p>
+    </div>
+  );
+};
+
+// --- Small trend badge used in the ranked list below the chart ---
+const TrendIndicator: React.FC<{ changePercent: number }> = ({ changePercent }) => {
+  const isUp = changePercent >= 0;
+  return (
+    <span className={`inline-flex items-center gap-0.5 text-xs font-semibold ${isUp ? 'text-green-600' : 'text-red-600'}`}>
+      {isUp ? '▲' : '▼'} {Math.abs(changePercent).toFixed(0)}%
+    </span>
+  );
+};
 
 const Dashboard: React.FC = () => {
     const [activeIndex, setActiveIndex] = React.useState(0);
@@ -296,17 +341,37 @@ const Dashboard: React.FC = () => {
             </div>
 
             <Card className="p-6">
-                <h3 className="font-bold text-lg text-slate-700 mb-4">Most Accessed Resources</h3>
-                 <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={resourceData} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <h3 className="font-bold text-lg text-slate-700">Most Accessed Resources</h3>
+                <p className="text-sm text-slate-500 mb-4">Total views per resource, ranked, with change vs the previous period.</p>
+
+                <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={getRankedResources()} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 20 }}>
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis type="number" />
-                        <YAxis dataKey="name" type="category" width={120} />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="usage" fill="#3b82f6" />
+                        <XAxis type="number" label={{ value: 'Total Views', position: 'insideBottom', offset: -10, fill: '#64748b', fontSize: 12 }} />
+                        <YAxis dataKey="name" type="category" width={130} tick={{ fontSize: 13 }} />
+                        <Tooltip content={<ResourceTooltip />} />
+                        <Legend verticalAlign="top" wrapperStyle={{ paddingBottom: 8 }} />
+                        <Bar dataKey="usage" name="Views" fill="#3b82f6" radius={[0, 4, 4, 0]} />
                     </BarChart>
                 </ResponsiveContainer>
+
+                {/* Ranked list — clearer side-by-side comparison than reading bar lengths alone */}
+                <ul className="mt-4 divide-y divide-slate-100 border-t border-slate-100">
+                    {getRankedResources().map((r) => (
+                        <li key={r.name} className="flex items-center justify-between py-2.5 text-sm">
+                            <div className="flex items-center gap-3 min-w-0">
+                                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">
+                                    {r.rank}
+                                </span>
+                                <span className="font-medium text-slate-700 truncate">{r.name}</span>
+                            </div>
+                            <div className="flex items-center gap-3 flex-shrink-0">
+                                <span className="text-slate-500">{r.usage.toLocaleString()} views</span>
+                                <TrendIndicator changePercent={r.changePercent} />
+                            </div>
+                        </li>
+                    ))}
+                </ul>
             </Card>
         </div>
     );
