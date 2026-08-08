@@ -26,6 +26,8 @@ export interface ForumPost {
   replies: number;
   timestamp: string;
   replyList?: ForumReply[];
+   likes?: number;
+   likedBy?: string[];
 }
 
 export type View = 'home' | 'chatbot' | 'resources' | 'booking' | 'forum' | 'dashboard';
