@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import type { ChatMessage } from '../types';
 import { sendMessageToAI } from '../services/geminiService';
@@ -21,6 +20,10 @@ const Chatbot: React.FC = () => {
 
   const handleSend = async () => {
     if (input.trim() === '' || isLoading) return;
+    if (input.length > 500) {
+      alert("Message is too long. Please keep it under 500 characters.");
+      return;
+    }
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
@@ -71,9 +74,16 @@ const Chatbot: React.FC = () => {
             ))}
             {isLoading && (
               <div className="flex items-end gap-2 justify-start">
-                <div className="flex-shrink-0 h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-sm">M</div>
+                <div className="flex-shrink-0 h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-sm">
+                  M
+                </div>
                 <div className="max-w-md px-4 py-3 rounded-2xl shadow-sm bg-white text-slate-700 rounded-bl-none">
-                  <Spinner />
+                  <div className="flex items-center gap-2">
+                    <Spinner />
+                    <span className="text-sm text-slate-500">
+                      Mindy is typing...
+                    </span>
+                  </div>
                 </div>
               </div>
             )}
