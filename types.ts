@@ -11,6 +11,12 @@ export interface Counselor {
   imageUrl: string;
   languages: string[];
 }
+export interface ForumReply {
+  id: number;
+  author: string;
+  content: string;
+  timestamp: string;
+}
 
 export interface ForumPost {
   id: number;
@@ -19,6 +25,7 @@ export interface ForumPost {
   content: string;
   replies: number;
   timestamp: string;
+  replyList?: ForumReply[];
 }
 
 export type View = 'home' | 'chatbot' | 'resources' | 'booking' | 'forum' | 'dashboard';
