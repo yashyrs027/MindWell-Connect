@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from './common/Card';
 
 interface LandingPageProps {
@@ -64,6 +64,44 @@ const scrollTo = (id: string) => {
 };
 
 const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToLogin, onNavigateToSignup }) => {
+  const [contactName, setContactName] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactMessage, setContactMessage] = useState('');
+  const [contactErrors, setContactErrors] = useState<{ name?: string; email?: string; message?: string }>({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const validateContact = () => {
+    const newErrors: { name?: string; email?: string; message?: string } = {};
+    const trimmedName = contactName.trim();
+    const trimmedEmail = contactEmail.trim();
+    const trimmedMessage = contactMessage.trim();
+
+    if (!trimmedName) newErrors.name = 'Name is required.';
+    if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      newErrors.email = 'Enter a valid email address.';
+    }
+    if (!trimmedMessage) newErrors.message = 'Message is required.';
+
+    setContactErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const clearContactError = (field: 'name' | 'email' | 'message') => {
+    if (contactErrors[field]) setContactErrors(prev => ({ ...prev, [field]: undefined }));
+  };
+
+  const handleContactSubmit = () => {
+    if (!validateContact()) return;
+    // No backend yet — simulate success and reset the form.
+    setIsSubmitted(true);
+    setContactName('');
+    setContactEmail('');
+    setContactMessage('');
+    setContactErrors({});
+
+    // Hide the success message after a few seconds so the form is reusable.
+    setTimeout(() => setIsSubmitted(false), 4000);
+  };
   return (
     <div className="min-h-screen bg-white text-slate-800 flex flex-col">
 
@@ -182,43 +220,85 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToLogin, onNavigate
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="px-6 py-20 bg-white">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-slate-800">Get in touch</h2>
-          <p className="mt-3 text-slate-500 mb-10">Have questions or feedback? We'd love to hear from you.</p>
-          <Card className="p-8 text-left">
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Name</label>
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Email</label>
-                <input
-                  type="email"
-                  placeholder="your@email.com"
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Message</label>
-                <textarea
-                  placeholder="Write your message..."
-                  rows={4}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow resize-none"
-                />
-              </div>
-              <button className="w-full bg-blue-500 text-white font-semibold py-3 rounded-lg hover:bg-blue-600 transition-colors">
-                Send Message
-              </button>
-            </div>
-          </Card>
+<section id="contact" className="px-6 py-20 bg-white">
+  <div className="max-w-2xl mx-auto text-center">
+    <h2 className="text-3xl font-bold text-slate-800">Get in touch</h2>
+    <p className="mt-3 text-slate-500 mb-10">Have questions or feedback? We'd love to hear from you.</p>
+    <Card className="p-8 text-left">
+      {isSubmitted && (
+        <div className="mb-4 bg-green-50 border-l-4 border-green-400 text-green-700 text-sm font-medium px-4 py-3 rounded-md">
+          Message sent! We'll get back to you soon.
         </div>
-      </section>
+      )}
+      <form
+        onSubmit={(e) => { e.preventDefault(); handleContactSubmit(); }}
+        noValidate
+        className="space-y-4"
+      >
+        <div>
+          <label className="block text-sm font-semibold text-slate-700 mb-1">Name</label>
+          <input
+            type="text"
+            placeholder="Your name"
+            value={contactName}
+            onChange={(e) => { setContactName(e.target.value); clearContactError('name'); }}
+            aria-invalid={!!contactErrors.name}
+            aria-describedby={contactErrors.name ? 'contact-name-error' : undefined}
+            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow ${
+              contactErrors.name ? 'border-red-400' : 'border-slate-300'
+            }`}
+          />
+          {contactErrors.name && (
+            <p id="contact-name-error" className="text-red-500 text-xs mt-1">{contactErrors.name}</p>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-slate-700 mb-1">Email</label>
+          <input
+            type="email"
+            placeholder="your@email.com"
+            value={contactEmail}
+            onChange={(e) => { setContactEmail(e.target.value); clearContactError('email'); }}
+            aria-invalid={!!contactErrors.email}
+            aria-describedby={contactErrors.email ? 'contact-email-error' : undefined}
+            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow ${
+              contactErrors.email ? 'border-red-400' : 'border-slate-300'
+            }`}
+          />
+          {contactErrors.email && (
+            <p id="contact-email-error" className="text-red-500 text-xs mt-1">{contactErrors.email}</p>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-slate-700 mb-1">Message</label>
+          <textarea
+            placeholder="Write your message..."
+            rows={4}
+            value={contactMessage}
+            onChange={(e) => { setContactMessage(e.target.value); clearContactError('message'); }}
+            aria-invalid={!!contactErrors.message}
+            aria-describedby={contactErrors.message ? 'contact-message-error' : undefined}
+            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow resize-none ${
+              contactErrors.message ? 'border-red-400' : 'border-slate-300'
+            }`}
+          />
+          {contactErrors.message && (
+            <p id="contact-message-error" className="text-red-500 text-xs mt-1">{contactErrors.message}</p>
+          )}
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white font-semibold py-3 rounded-lg hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Send Message
+        </button>
+      </form>
+    </Card>
+  </div>
+</section>
 
       {/* Footer */}
       <footer className="bg-slate-800 text-slate-400 px-6 py-10">
