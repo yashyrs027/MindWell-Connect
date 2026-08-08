@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import Card from './common/Card';
 import localVideo from '../video/v.mp4';
@@ -19,57 +18,117 @@ interface AudioItem {
   url: string;
 }
 
+// NEW: full article shape for the detail view
+interface ArticleItem {
+  slug: string;
+  title: string;
+  desc: string;
+  img: string;
+  content: string; // paragraphs separated by \n\n
+  author: string;
+  category: string;
+  publishedDate: string;
+  updatedDate?: string;
+  readTime?: string;
+}
+
 const resourcesData: {
-  articles: Array<{ title: string; desc: string; img: string }>;
+  articles: ArticleItem[];
   videos: VideoItem[];
   audio: AudioItem[];
 } = {
   articles: [
-    { title: "Understanding Exam Anxiety", desc: "Tips to stay calm and focused during exam season.", img: "https://picsum.photos/400/200?random=1" },
-    { title: "The Imposter Syndrome", desc: "How to overcome feelings of not being good enough.", img: "https://picsum.photos/400/200?random=2" },
-    { title: "Building Healthy Friendships", desc: "Navigating social life at college.", img: "https://picsum.photos/400/200?random=3" },
-    { title: "Digital Detox Guide", desc: "Finding balance in a connected world.", img: "https://picsum.photos/400/200?random=4" }
+    {
+      slug: 'understanding-exam-anxiety',
+      title: 'Understanding Exam Anxiety',
+      desc: 'Tips to stay calm and focused during exam season.',
+      img: 'https://picsum.photos/800/400?random=1',
+      author: 'Dr. Anjali Kumar',
+      category: 'Stress & Anxiety',
+      publishedDate: 'March 3, 2025',
+      updatedDate: 'March 18, 2025',
+      readTime: '5 min read',
+      content:
+        "Exam anxiety is one of the most common challenges students face, and it can show up as racing thoughts, a pounding heart, or a mind that suddenly goes blank the moment you sit down to write. It's a normal stress response, but when it becomes overwhelming, it can get in the way of showing what you actually know.\n\nOne of the most effective ways to manage exam anxiety is preparation paired with self-compassion. Studying in shorter, focused sessions with breaks in between — rather than last-minute cramming — reduces the sense of panic that builds when everything feels unfinished.\n\nBreathing techniques can also help in the moments right before an exam. Try inhaling for four counts, holding for four, and exhaling for four. This activates your body's relaxation response and can quiet a racing mind.\n\nFinally, remind yourself that one exam does not define your worth or your future. Setbacks are part of learning, and reaching out to a counselor or trusted mentor when anxiety feels unmanageable is a sign of strength, not weakness.",
+    },
+    {
+      slug: 'the-imposter-syndrome',
+      title: 'The Imposter Syndrome',
+      desc: 'How to overcome feelings of not being good enough.',
+      img: 'https://picsum.photos/800/400?random=2',
+      author: 'Marcus Chen, LMFT',
+      category: 'Self-Esteem',
+      publishedDate: 'February 14, 2025',
+      readTime: '4 min read',
+      content:
+        "Imposter syndrome is the persistent feeling that you don't truly belong or deserve your achievements — even when there's clear evidence that you do. It's especially common among students navigating a new environment, surrounded by peers who all seem to have it figured out.\n\nThe first step in managing imposter syndrome is naming it. Simply recognizing 'this is imposter syndrome talking, not the truth' can create just enough distance to think more clearly.\n\nKeeping a record of your accomplishments, however small, can also help counter the internal narrative that you're 'faking it.' Revisit this list when self-doubt creeps in.\n\nMost importantly, talk about it. You'll often find that the people around you — even the ones who seem the most confident — feel exactly the same way.",
+    },
+    {
+      slug: 'building-healthy-friendships',
+      title: 'Building Healthy Friendships',
+      desc: 'Navigating social life at college.',
+      img: 'https://picsum.photos/800/400?random=3',
+      author: 'Priya Nair',
+      category: 'Relationships',
+      publishedDate: 'January 27, 2025',
+      readTime: '6 min read',
+      content:
+        "College often means building an entirely new social circle, which can be exciting and daunting at the same time. Healthy friendships are built on mutual respect, honesty, and the ability to be yourself without fear of judgment.\n\nStart small: joining clubs, study groups, or shared-interest communities gives you natural, low-pressure ways to meet people repeatedly, which is often how real friendships form.\n\nPay attention to how you feel around certain people. Friendships that consistently leave you feeling drained, anxious, or small are worth reevaluating, no matter how long you've known someone.\n\nAnd remember — quality matters more than quantity. A couple of genuine, supportive friendships will do more for your wellbeing than a large circle of surface-level connections.",
+    },
+    {
+      slug: 'digital-detox-guide',
+      title: 'Digital Detox Guide',
+      desc: 'Finding balance in a connected world.',
+      img: 'https://picsum.photos/800/400?random=4',
+      author: 'Dr. Anjali Kumar',
+      category: 'Digital Wellbeing',
+      publishedDate: 'January 9, 2025',
+      updatedDate: 'February 2, 2025',
+      readTime: '5 min read',
+      content:
+        "Constant connectivity can quietly erode focus, sleep, and mood — often without us noticing until we feel burnt out. A digital detox doesn't have to mean disappearing from technology entirely; it means being intentional about when and how you use it.\n\nStart by identifying your biggest triggers — is it late-night scrolling, checking notifications first thing in the morning, or comparing yourself to others on social media? Awareness is the first step to change.\n\nTry setting specific phone-free windows, such as the first hour after waking up or the hour before bed. Replacing scrolling with a short walk, journaling, or reading can make this transition easier.\n\nOver time, small boundaries like these can restore a sense of control over your attention — and make the time you do spend online more intentional and enjoyable.",
+    },
   ],
   videos: [
-    { 
-      title: "5-Minute Guided Meditation", 
-      desc: "A short calming video to help you recenter yourself.", 
-      img: "https://picsum.photos/400/200?random=5",
-      url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
+    {
+      title: '5-Minute Guided Meditation',
+      desc: 'A short calming video to help you recenter yourself.',
+      img: 'https://picsum.photos/400/200?random=5',
+      url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
     },
-    { 
-      title: "Expert Talk: Coping with Burnout", 
-      desc: "Dr. Anjali Kumar discusses student burnout and recovery.", 
-      img: "https://picsum.photos/400/200?random=6",
-      url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+    {
+      title: 'Expert Talk: Coping with Burnout',
+      desc: 'Dr. Anjali Kumar discusses student burnout and recovery.',
+      img: 'https://picsum.photos/400/200?random=6',
+      url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
     },
-    { 
-      title: "Yoga for Stress Relief", 
-      desc: "A beginner-friendly yoga session for relaxation.", 
-      img: "https://picsum.photos/400/200?random=7",
-      url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/TearsOfSteel.jpg"
-    }
+    {
+      title: 'Yoga for Stress Relief',
+      desc: 'A beginner-friendly yoga session for relaxation.',
+      img: 'https://picsum.photos/400/200?random=7',
+      url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/TearsOfSteel.jpg',
+    },
   ],
   audio: [
-    { 
-      title: "Calming Ocean Waves", 
-      desc: "30 minutes of soothing ocean sounds for relaxation or sleep.", 
+    {
+      title: 'Calming Ocean Waves',
+      desc: '30 minutes of soothing ocean sounds for relaxation or sleep.',
       icon: '🌊',
-      url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+      url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
     },
-    { 
-      title: "Forest Ambience", 
-      desc: "Listen to the gentle sounds of a forest.", 
+    {
+      title: 'Forest Ambience',
+      desc: 'Listen to the gentle sounds of a forest.',
       icon: '🌳',
-      url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+      url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
     },
-    { 
-      title: "Mindful Breathing Exercise", 
-      desc: "A 10-minute guided breathing session.", 
+    {
+      title: 'Mindful Breathing Exercise',
+      desc: 'A 10-minute guided breathing session.',
       icon: '🧘',
-      url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
-    }
-  ]
+      url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+    },
+  ],
 };
 
 const formatTime = (seconds: number): string => {
@@ -79,9 +138,86 @@ const formatTime = (seconds: number): string => {
   return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
 };
 
+// --- NEW: Article Detail sub-view ---
+interface ArticleDetailProps {
+  slug: string;
+  onBack: () => void;
+}
+
+const ArticleDetail: React.FC<ArticleDetailProps> = ({ slug, onBack }) => {
+  const article = resourcesData.articles.find(a => a.slug === slug);
+
+  const BackButton = (
+    <button
+      onClick={onBack}
+      className="mb-6 flex items-center gap-1 text-blue-600 hover:underline font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+      </svg>
+      Back to Resources
+    </button>
+  );
+
+  if (!article) {
+    return (
+      <div className="max-w-3xl mx-auto text-center py-16">
+        {BackButton}
+        <h1 className="text-2xl font-bold text-slate-800">Article not found</h1>
+        <p className="text-slate-600 mt-2">The article you're looking for doesn't exist or may have been removed.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-3xl mx-auto">
+      {BackButton}
+
+      <img
+        src={article.img}
+        alt={`Cover image for the article: ${article.title}`}
+        className="w-full h-64 sm:h-80 object-cover rounded-2xl shadow-md mb-6"
+      />
+
+      <span className="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full mb-3 tracking-wide uppercase">
+        {article.category}
+      </span>
+
+      <h1 className="text-3xl font-bold text-slate-800 leading-tight">{article.title}</h1>
+
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-500 mt-3 pb-6 border-b border-slate-200">
+        <span>By {article.author}</span>
+        <span aria-hidden="true">&bull;</span>
+        <span>Published {article.publishedDate}</span>
+        {article.updatedDate && (
+          <>
+            <span aria-hidden="true">&bull;</span>
+            <span>Updated {article.updatedDate}</span>
+          </>
+        )}
+        {article.readTime && (
+          <>
+            <span aria-hidden="true">&bull;</span>
+            <span>{article.readTime}</span>
+          </>
+        )}
+      </div>
+
+      <div className="prose prose-slate max-w-none mt-6 space-y-4">
+        {article.content.split('\n\n').map((paragraph, i) => (
+          <p key={i} className="text-slate-700 leading-relaxed">{paragraph}</p>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const Resources: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ResourceCategory>('articles');
-  
+
+  // NEW: article detail navigation state
+  const [selectedArticleSlug, setSelectedArticleSlug] = useState<string | null>(null);
+
   // Audio state
   const [playingAudioIndex, setPlayingAudioIndex] = useState<number | null>(null);
   const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
@@ -94,7 +230,6 @@ const Resources: React.FC = () => {
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
   const [videoError, setVideoError] = useState(false);
 
-  // Initialize audio listeners
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -123,9 +258,7 @@ const Resources: React.FC = () => {
     };
   }, []);
 
-  // Handle Audio Play/Pause Toggle
   const handleToggleAudio = (index: number) => {
-    // Pause any open video modal playback when launching audio
     if (activeVideo) {
       setActiveVideo(null);
     }
@@ -177,7 +310,6 @@ const Resources: React.FC = () => {
     }
   };
 
-  // Handle Video Trigger
   const handlePlayVideo = (video: VideoItem) => {
     if (audioRef.current && isPlayingAudio) {
       audioRef.current.pause();
@@ -187,15 +319,25 @@ const Resources: React.FC = () => {
     setActiveVideo(video);
   };
 
+  // NEW: open/close article detail
+  const openArticle = (slug: string) => setSelectedArticleSlug(slug);
+  const closeArticle = () => setSelectedArticleSlug(null);
+
   const renderContent = () => {
     switch (activeTab) {
       case 'articles':
-        return resourcesData.articles.map((item, index) => (
-          <Card key={index} className="group">
+        return resourcesData.articles.map((item) => (
+          <Card
+            key={item.slug}
+            className="group"
+            onClick={() => openArticle(item.slug)}
+            ariaLabel={`Read article: ${item.title}`}
+          >
             <img src={item.img} alt={item.title} className="w-full h-40 object-cover" />
             <div className="p-4">
-              <h3 className="font-bold text-lg text-slate-800">{item.title}</h3>
+              <h3 className="font-bold text-lg text-slate-800 group-hover:text-blue-600 transition-colors">{item.title}</h3>
               <p className="text-slate-600 text-sm mt-1">{item.desc}</p>
+              <span className="inline-block text-sm font-semibold text-blue-600 mt-3 group-hover:underline">Read More →</span>
             </div>
           </Card>
         ));
@@ -203,8 +345,9 @@ const Resources: React.FC = () => {
         return resourcesData.videos.map((item, index) => (
           <Card 
             key={index} 
-            className="group relative cursor-pointer overflow-hidden transform transition duration-200 hover:-translate-y-1 hover:shadow-lg"
+            className="group relative overflow-hidden transform transition duration-200 hover:-translate-y-1 hover:shadow-lg"
             onClick={() => handlePlayVideo(item)}
+            ariaLabel={`Play video: ${item.title}`}
           >
             <img src={item.img} alt={item.title} className="w-full h-40 object-cover" />
             <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-80 group-hover:opacity-100 group-hover:bg-opacity-50 transition-all">
@@ -264,9 +407,13 @@ const Resources: React.FC = () => {
 
   const currentAudioItem = playingAudioIndex !== null ? resourcesData.audio[playingAudioIndex] : null;
 
+  // NEW: render article detail in place of the list/tabs
+  if (selectedArticleSlug) {
+    return <ArticleDetail slug={selectedArticleSlug} onBack={closeArticle} />;
+  }
+
   return (
     <div className="space-y-6 pb-24">
-      {/* Hidden Audio Element */}
       <audio ref={audioRef} preload="metadata" />
 
       <div className="text-center">
@@ -282,7 +429,6 @@ const Resources: React.FC = () => {
         {renderContent()}
       </div>
 
-      {/* Sticky Bottom Audio Player Bar */}
       {currentAudioItem && (
         <div className="fixed bottom-4 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:max-w-2xl bg-slate-900 text-white rounded-2xl shadow-2xl p-4 z-40 flex flex-col space-y-2 border border-slate-800 backdrop-blur-md bg-opacity-95">
           <div className="flex items-center justify-between">
@@ -353,7 +499,6 @@ const Resources: React.FC = () => {
         </div>
       )}
 
-      {/* Video Modal Player */}
       {activeVideo && (
         <div 
           className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn"
@@ -363,7 +508,6 @@ const Resources: React.FC = () => {
             className="bg-slate-900 rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl relative border border-slate-800"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Header */}
             <div className="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-900/90 text-white">
               <h3 className="font-bold text-lg truncate pr-4">{activeVideo.title}</h3>
               <button 
@@ -377,34 +521,31 @@ const Resources: React.FC = () => {
               </button>
             </div>
 
-            {/* Video Container */}
             <div className="relative bg-black flex items-center justify-center min-h-[260px]">
               <video
-  key={videoError ? 'fallback' : 'primary'}
-  controls
-  autoPlay
-  playsInline
-  preload="auto"
-  className="w-full max-h-[60vh] object-contain rounded-b-none"
-  onError={() => {
-    if (!videoError) {
-      setVideoError(true);
-    }
-  }}
->
-  <source
-    src={videoError ? localVideo : activeVideo.url}
-    type="video/mp4"
-  />
-
-  Your browser does not support the video tag.
-</video>
+                key={videoError ? 'fallback' : 'primary'}
+                controls
+                autoPlay
+                playsInline
+                preload="auto"
+                className="w-full max-h-[60vh] object-contain rounded-b-none"
+                onError={() => {
+                  if (!videoError) {
+                    setVideoError(true);
+                  }
+                }}
+              >
+                <source
+                  src={videoError ? localVideo : activeVideo.url}
+                  type="video/mp4"
+                />
+                Your browser does not support the video tag.
+              </video>
               {videoError && !localVideo && (
                 <p className="absolute text-slate-400 text-sm">Video unavailable.</p>
               )}
             </div>
 
-            {/* Modal Footer Description */}
             <div className="p-4 bg-slate-900 text-slate-300">
               <p className="text-sm">{activeVideo.desc}</p>
             </div>
@@ -428,4 +569,3 @@ const TabButton: React.FC<TabButtonProps> = ({ label, isActive, onClick }) => (
 )
 
 export default Resources;
-
