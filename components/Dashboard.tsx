@@ -210,6 +210,103 @@ const TrendIndicator: React.FC<{ changePercent: number }> = ({ changePercent }) 
     </span>
   );
 };
+// --- Anonymous Student Well-being Insights ---
+type WellbeingDirection = 'up' | 'down' | 'stable';
+
+interface WellbeingMetric {
+  key: 'Anxiety' | 'Stress' | 'Happiness';
+  label: string;
+  direction: WellbeingDirection;
+  changePercent: number;
+}
+
+// A metric is only called "up"/"down" if the shift clears this threshold;
+// smaller moves are reported as stable so normal noise isn't over-flagged.
+const STABILITY_THRESHOLD = 8;
+
+const computeWellbeingMetrics = (moodData: MoodPoint[]): WellbeingMetric[] => {
+  if (moodData.length < 2) return [];
+
+  const half = Math.max(1, Math.floor(moodData.length / 2));
+  const earlySlice = moodData.slice(0, half);
+  const recentSlice = moodData.slice(-half);
+
+  const avg = (slice: MoodPoint[], key: WellbeingMetric['key']) =>
+    slice.reduce((sum, p) => sum + p[key], 0) / slice.length;
+
+  return (['Anxiety', 'Stress', 'Happiness'] as const).map(key => {
+    const early = avg(earlySlice, key);
+    const recent = avg(recentSlice, key);
+    const changePercent = pctChange(recent, early);
+    const direction: WellbeingDirection =
+      Math.abs(changePercent) < STABILITY_THRESHOLD ? 'stable' : changePercent > 0 ? 'up' : 'down';
+    return { key, label: key, direction, changePercent };
+  });
+};
+
+const DirectionIcon: React.FC<{ direction: WellbeingDirection }> = ({ direction }) => {
+  if (direction === 'up') return <span aria-hidden="true">▲</span>;
+  if (direction === 'down') return <span aria-hidden="true">▼</span>;
+  return <span aria-hidden="true">→</span>;
+};
+
+const directionLabel = (metric: WellbeingMetric): string => {
+  if (metric.direction === 'stable') return 'Relatively stable compared with the previous period';
+  const verb = metric.direction === 'up' ? 'Increased' : 'Decreased';
+  return `${verb} compared with the previous period`;
+};
+
+// Neutral styling on purpose: an "increase" in Anxiety and an "increase"
+// in Happiness are not equivalent (bad vs good), so color/tone here stays
+// neutral rather than making a clinical judgment call in the UI.
+const directionColor = (direction: WellbeingDirection): string => {
+  if (direction === 'stable') return 'text-slate-500';
+  return 'text-slate-700';
+};
+
+const WellbeingInsights: React.FC<{
+  moodData: MoodPoint[]; concernData: ConcernPoint[]; isLoading: boolean; isEmpty: boolean;
+}> = ({ moodData, concernData, isLoading, isEmpty }) => {
+  const metrics = useMemo(() => computeWellbeingMetrics(moodData), [moodData]);
+  const topConcern = useMemo(
+    () => concernData.length ? concernData.reduce((max, c) => (c.value > max.value ? c : max), concernData[0]) : null,
+    [concernData]
+  );
+
+  return (
+    <Card className="p-6">
+      <h3 className="font-bold text-lg text-slate-700 mb-1">Anonymous Student Well-being</h3>
+      <p className="text-sm text-slate-500 mb-4">
+        Aggregated across all students for the selected period — no individual responses shown.
+      </p>
+
+      {isLoading ? (
+        <SectionSkeleton rows={4} />
+      ) : isEmpty || metrics.length === 0 ? (
+        <p className="text-sm text-slate-500 italic">Not enough data for the selected period to show a trend.</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {metrics.map(metric => (
+            <div key={metric.key} className="border border-slate-100 rounded-xl p-4">
+              <p className="text-sm font-semibold text-slate-600">{metric.label}</p>
+              <p className={`mt-2 text-lg font-bold flex items-center gap-1.5 ${directionColor(metric.direction)}`}>
+                <DirectionIcon direction={metric.direction} />
+                <span className="text-sm font-medium">{directionLabel(metric)}</span>
+              </p>
+            </div>
+          ))}
+
+          <div className="border border-slate-100 rounded-xl p-4">
+            <p className="text-sm font-semibold text-slate-600">Top Concern</p>
+            <p className="mt-2 text-lg font-bold text-slate-800">
+              {topConcern ? topConcern.name : '—'}
+            </p>
+          </div>
+        </div>
+      )}
+    </Card>
+  );
+};
 
 const getDefaultRange = (): DateRange => {
   const end = new Date();
@@ -253,6 +350,8 @@ const Dashboard: React.FC = () => {
       )}
 
       <PlatformInsights moodData={moodData} resourceData={resourceData} concernData={concernData} isLoading={isLoading} isEmpty={isEmpty} />
+
+      <WellbeingInsights moodData={moodData} concernData={concernData} isLoading={isLoading} isEmpty={isEmpty} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="lg:col-span-2 p-6">
