@@ -10,10 +10,11 @@ import LoginPage from './components/LoginPage';
 import SignupPage from './components/SignupPage';
 import LandingPage from './components/LandingPage';
 import type { View, UserRole } from './types';
+import { ThemeProvider } from './context/ThemeContext';
 
 type AuthView = 'landing' | 'login' | 'signup' | 'app';
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
   const [activeView, setActiveView] = useState<View>('home');
   const [userRole, setUserRole] = useState<UserRole>('guest');
   const [authView, setAuthView] = useState<AuthView>('landing');
@@ -73,7 +74,7 @@ const App: React.FC = () => {
 
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-100 text-slate-800">
+    <div className="flex flex-col min-h-screen bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-200">
       <Header 
         activeView={activeView} 
         setActiveView={setActiveView} 
@@ -83,11 +84,17 @@ const App: React.FC = () => {
       <main className="flex-grow container mx-auto p-4 sm:p-6 lg:p-8">
         {userRole === 'admin' ? <Dashboard /> : renderUserContent()}
       </main>
-      <footer className="text-center p-4 text-slate-500 text-sm border-t border-slate-200">
+      <footer className="text-center p-4 text-slate-500 dark:text-slate-400 text-sm border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
         © 2024 MindWell Connect. Your well-being is our priority.
       </footer>
     </div>
   );
 };
+
+const App: React.FC = () => (
+  <ThemeProvider>
+    <AppContent />
+  </ThemeProvider>
+);
 
 export default App;

@@ -103,23 +103,23 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToLogin, onNavigate
     setTimeout(() => setIsSubmitted(false), 4000);
   };
   return (
-    <div className="min-h-screen bg-white text-slate-800 flex flex-col">
+    <div className="min-h-screen bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 flex flex-col transition-colors duration-200">
 
       {/* Navbar */}
-      <nav className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-100 px-6 py-4 flex items-center justify-between">
+      <nav className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
             <path d="M15.5 12.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm3.5 4c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
           </svg>
-          <span className="text-lg font-bold text-slate-800">MindWell Connect</span>
+          <span className="text-lg font-bold text-slate-800 dark:text-white">MindWell Connect</span>
         </div>
 
         {/* Nav Links */}
-        <div className="hidden sm:flex items-center gap-6 text-sm font-medium text-slate-600">
-          <button onClick={() => scrollTo('about')} className="hover:text-blue-600 transition-colors">About</button>
-          <button onClick={() => scrollTo('workflow')} className="hover:text-blue-600 transition-colors">How It Works</button>
-          <button onClick={() => scrollTo('contact')} className="hover:text-blue-600 transition-colors">Contact</button>
+        <div className="hidden sm:flex items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300">
+          <button onClick={() => scrollTo('about')} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">About</button>
+          <button onClick={() => scrollTo('workflow')} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">How It Works</button>
+          <button onClick={() => scrollTo('contact')} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contact</button>
         </div>
 
         {/* Auth Buttons */}
@@ -140,15 +140,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToLogin, onNavigate
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-100 via-slate-50 to-purple-100 px-6 py-20 sm:py-28 text-center flex flex-col items-center">
+      <section className="bg-gradient-to-br from-blue-100 via-slate-50 to-purple-100 dark:from-slate-800 dark:via-slate-900 dark:to-slate-800 px-6 py-20 sm:py-28 text-center flex flex-col items-center">
         <span className="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full mb-5 tracking-wide uppercase">
           Mental Wellness for Students
         </span>
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-800 leading-tight max-w-3xl">
+       <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-800 dark:text-white leading-tight max-w-3xl">
           Your mind matters. <br />
           <span className="text-blue-600">We're here to help.</span>
         </h1>
-        <p className="mt-6 text-lg text-slate-600 max-w-xl">
+        <p className="mt-6 text-lg text-slate-600 dark:text-slate-300 max-w-xl">
           MindWell Connect is a safe, student-focused platform offering AI support, peer community, counselor booking, and mental health resources — all in one place.
         </p>
         <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
@@ -160,7 +160,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToLogin, onNavigate
           </button>
           <button
             onClick={onNavigateToLogin}
-            className="bg-white text-slate-700 font-semibold px-8 py-4 rounded-xl hover:bg-slate-50 border border-slate-200 transition-all duration-300 text-base"
+           className="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold px-8 py-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-all duration-300 text-base"
           >
             Sign In
           </button>
@@ -168,11 +168,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToLogin, onNavigate
       </section>
 
       {/* About Section */}
-      <section id="about" className="px-6 py-20 bg-white">
+      <section id="about" className="px-6 py-20 bg-white dark:bg-slate-900">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-800">Everything you need to thrive</h2>
-            <p className="mt-3 text-slate-500">Four powerful tools, one platform, zero cost.</p>
+            <h2 className="text-3xl font-bold text-slate-800 dark:text-white">Everything you need to thrive</h2>
+            <p className="mt-3 text-slate-500 dark:text-slate-400">Four powerful tools, one platform, zero cost.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature) => (
@@ -181,8 +181,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToLogin, onNavigate
                   {feature.icon}
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-800 text-base">{feature.title}</h3>
-                  <p className="text-sm text-slate-500 mt-1 leading-relaxed">{feature.description}</p>
+                  <h3 className="font-bold text-slate-800 dark:text-white text-base">{feature.title}</h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">{feature.description}</p>
                 </div>
               </Card>
             ))}
@@ -191,11 +191,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToLogin, onNavigate
       </section>
 
       {/* How It Works Section */}
-      <section id="workflow" className="px-6 py-20 bg-gradient-to-br from-slate-50 to-blue-50">
+      <section id="workflow" className="px-6 py-20 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-800 dark:to-slate-900">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-800">How it works</h2>
-            <p className="mt-3 text-slate-500">Up and running in under a minute.</p>
+            <h2 className="text-3xl font-bold text-slate-800 dark:text-white">How it works</h2>
+            <p className="mt-3 text-slate-500 dark:text-slate-400">Up and running in under a minute.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {steps.map((item) => (
@@ -203,8 +203,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToLogin, onNavigate
                 <div className="w-14 h-14 rounded-full bg-blue-500 text-white flex items-center justify-center text-xl font-extrabold shadow-lg shadow-blue-200">
                   {item.step}
                 </div>
-                <h3 className="font-bold text-slate-800 text-base">{item.title}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">{item.description}</p>
+                <h3 className="font-bold text-slate-800 dark:text-white text-base">{item.title}</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{item.description}</p>
               </div>
             ))}
           </div>
@@ -220,10 +220,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToLogin, onNavigate
       </section>
 
       {/* Contact Section */}
-<section id="contact" className="px-6 py-20 bg-white">
+<section id="contact" className="px-6 py-20 bg-white dark:bg-slate-900">
   <div className="max-w-2xl mx-auto text-center">
-    <h2 className="text-3xl font-bold text-slate-800">Get in touch</h2>
-    <p className="mt-3 text-slate-500 mb-10">Have questions or feedback? We'd love to hear from you.</p>
+    <h2 className="text-3xl font-bold text-slate-800 dark:text-white">Get in touch</h2>
+    <p className="mt-3 text-slate-500 dark:text-slate-400 mb-10">Have questions or feedback? We'd love to hear from you.</p>
     <Card className="p-8 text-left">
       {isSubmitted && (
         <div className="mb-4 bg-green-50 border-l-4 border-green-400 text-green-700 text-sm font-medium px-4 py-3 rounded-md">
@@ -236,7 +236,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToLogin, onNavigate
         className="space-y-4"
       >
         <div>
-          <label className="block text-sm font-semibold text-slate-700 mb-1">Name</label>
+          <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">Name</label>
           <input
             type="text"
             placeholder="Your name"
@@ -244,8 +244,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToLogin, onNavigate
             onChange={(e) => { setContactName(e.target.value); clearContactError('name'); }}
             aria-invalid={!!contactErrors.name}
             aria-describedby={contactErrors.name ? 'contact-name-error' : undefined}
-            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow ${
-              contactErrors.name ? 'border-red-400' : 'border-slate-300'
+            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 ${
+              contactErrors.name ? 'border-red-400' : 'border-slate-300 dark:border-slate-600'
             }`}
           />
           {contactErrors.name && (
@@ -254,7 +254,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToLogin, onNavigate
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-slate-700 mb-1">Email</label>
+          <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">Email</label>
           <input
             type="email"
             placeholder="your@email.com"
@@ -262,8 +262,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToLogin, onNavigate
             onChange={(e) => { setContactEmail(e.target.value); clearContactError('email'); }}
             aria-invalid={!!contactErrors.email}
             aria-describedby={contactErrors.email ? 'contact-email-error' : undefined}
-            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow ${
-              contactErrors.email ? 'border-red-400' : 'border-slate-300'
+            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 ${
+              contactErrors.email ? 'border-red-400' : 'border-slate-300 dark:border-slate-600'
             }`}
           />
           {contactErrors.email && (
@@ -272,7 +272,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToLogin, onNavigate
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-slate-700 mb-1">Message</label>
+          <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">Message</label>
           <textarea
             placeholder="Write your message..."
             rows={4}
@@ -280,8 +280,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToLogin, onNavigate
             onChange={(e) => { setContactMessage(e.target.value); clearContactError('message'); }}
             aria-invalid={!!contactErrors.message}
             aria-describedby={contactErrors.message ? 'contact-message-error' : undefined}
-            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow resize-none ${
-              contactErrors.message ? 'border-red-400' : 'border-slate-300'
+            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow resize-none bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 ${
+              contactErrors.message ? 'border-red-400' : 'border-slate-300 dark:border-slate-600'
             }`}
           />
           {contactErrors.message && (

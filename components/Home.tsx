@@ -26,15 +26,15 @@ const Home: React.FC<HomeProps> = ({ setActiveView }) => {
   return (
     <div className="space-y-8 animate-fade-in">
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-slate-800 tracking-tight">Welcome, Student!</h1>
-        <p className="mt-2 text-lg text-slate-600">Your space for mental well-being and support.</p>
+        <h1 className="text-4xl font-bold text-slate-800 dark:text-white tracking-tight">Welcome, Student!</h1>
+        <p className="mt-2 text-lg text-slate-600 dark:text-slate-300">Your space for mental well-being and support.</p>
       </div>
 
-      <Card className="p-6 bg-white shadow-lg">
-        <h2 className="text-xl font-semibold text-center text-slate-700 mb-4">Daily Check-in</h2>
+      <Card className="p-6 bg-white dark:bg-slate-800 shadow-lg">
+        <h2 className="text-xl font-semibold text-center text-slate-700 dark:text-slate-200 mb-4">Daily Check-in</h2>
         {!selectedMood ? (
           <>
-            <p className="text-center text-slate-600 mb-6">How are you feeling today?</p>
+            <p className="text-center text-slate-600 dark:text-slate-300 mb-6">How are you feeling today?</p>
             <div className="flex justify-center items-center space-x-2 sm:space-x-4">
               {moods.map(({ emoji, label }) => (
                 <button
@@ -43,15 +43,15 @@ const Home: React.FC<HomeProps> = ({ setActiveView }) => {
                   className="flex flex-col items-center p-3 rounded-lg hover:bg-slate-100 transition-colors duration-200"
                 >
                   <span className="text-4xl">{emoji}</span>
-                  <span className="text-xs mt-2 text-slate-500">{label}</span>
+                  <span className="text-xs mt-2 text-slate-500 dark:text-slate-400">{label}</span>
                 </button>
               ))}
             </div>
           </>
         ) : (
           <div className="text-center">
-            <p className="text-slate-600 mb-4">Thanks for checking in! You're feeling <span className="font-semibold text-blue-600">{selectedMood.toLowerCase()}</span> today.</p>
-            <p className="text-sm text-slate-500">Remember to be kind to yourself. Explore the resources below if you need support.</p>
+            <p className="text-slate-600 dark:text-slate-300 mb-4">Thanks for checking in! You're feeling <span className="font-semibold text-blue-600">{selectedMood.toLowerCase()}</span> today.</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Remember to be kind to yourself. Explore the resources below if you need support.</p>
           </div>
         )}
       </Card>
@@ -98,8 +98,8 @@ const HomeCard: React.FC<HomeCardProps> = ({ icon, title, description, bgColor, 
             <div className={`p-4 rounded-full inline-block ${bgColor}`}>
                 {icon}
             </div>
-            <h3 className="text-xl font-bold mt-4 text-slate-800">{title}</h3>
-            <p className="text-slate-600 mt-2">{description}</p>
+            <h3 className="text-xl font-bold mt-4 text-slate-800 dark:text-white">{title}</h3>
+            <p className="text-slate-600 dark:text-slate-300 mt-2">{description}</p>
         </div>
     </Card>
 );
