@@ -19,7 +19,7 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup, onNavigateToLogin, on
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 via-slate-50 to-purple-100 p-4">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 via-slate-50 to-purple-100 dark:from-slate-800 dark:via-slate-900 dark:to-slate-800 p-4">
       <Card className="max-w-md w-full text-center p-8 lg:p-12 shadow-2xl animate-fade-in-up">
         <button
           onClick={onNavigateToLanding}
@@ -35,7 +35,8 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup, onNavigateToLogin, on
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
             <path d="M15.5 12.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm3.5 4c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
           </svg>
-          <h1 className="text-3xl font-bold text-slate-800">MindWell Connect</h1>
+          <h1 className="text-3xl font-bold text-slate-800 dark:text-white">MindWell Connect</h1>
+
         </div>
         <p className="text-slate-600 mb-8">Create your student account.</p>
         
@@ -80,7 +81,7 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup, onNavigateToLogin, on
           </button>
         </form>
           
-        <p className="text-sm text-slate-500 mt-4">
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-4">
             Already have an account?{' '}
             <button type="button" onClick={onNavigateToLogin} className="font-semibold text-blue-600 hover:underline">
               Log in

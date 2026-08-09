@@ -27,8 +27,8 @@ const renderActiveShape = (props: any) => {
       <Sector cx={cx} cy={cy} startAngle={startAngle} endAngle={endAngle} innerRadius={outerRadius + 6} outerRadius={outerRadius + 10} fill={fill} />
       <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
       <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`${value} cases`}</text>
-      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">{`(Rate ${(percent * 100).toFixed(2)}%)`}</text>
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="currentColor" className="fill-slate-700 dark:fill-slate-200">{`${value} cases`}</text>
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="currentColor" className="fill-slate-400">{`(Rate ${(percent * 100).toFixed(2)}%)`}</text>
     </g>
   );
 };
@@ -149,8 +149,8 @@ const PlatformInsights: React.FC<{
 
   return (
     <Card className="p-6">
-      <h3 className="font-bold text-lg text-slate-700 mb-1">Platform Insights</h3>
-      <p className="text-sm text-slate-500 mb-4">Aggregated trends for the selected period — no individual data shown.</p>
+      <h3 className="font-bold text-lg text-slate-700 dark:text-slate-200 mb-1">Platform Insights</h3>
+     <p className="text-sm text-slate-500 dark:text-slate-400 mb-4"> Aggregated trends for the selected period — no individual data shown.</p>
 
       {isLoading ? (
         <SectionSkeleton />
@@ -163,7 +163,7 @@ const PlatformInsights: React.FC<{
           {insights.map(insight => (
             <li key={insight.id} className="flex items-start gap-3">
               <span className="text-xl leading-none flex-shrink-0" aria-hidden="true">{insight.icon}</span>
-              <span className="text-sm text-slate-700 flex items-center flex-wrap">
+              <span className="text-sm text-slate-700 dark:text-slate-200 flex items-center flex-wrap">
                 {insight.text}
                 <TrendBadge direction={insight.direction} changeLabel={insight.changeLabel} />
               </span>
@@ -191,9 +191,9 @@ const ResourceTooltip: React.FC<any> = ({ active, payload }) => {
   const data: RankedResource = payload[0].payload;
   const trendUp = data.changePercent >= 0;
   return (
-    <div className="bg-white border border-slate-200 rounded-lg shadow-lg px-4 py-3 text-sm">
-      <p className="font-bold text-slate-800">{data.name}</p>
-      <p className="text-slate-600 mt-1">{data.usage.toLocaleString()} views</p>
+    <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg px-4 py-3 text-sm">
+      <p className="font-bold text-slate-800 dark:text-white">{data.name}</p>
+      <p className="text-slate-600 dark:text-slate-300 mt-1">{data.usage.toLocaleString()} views</p>
       <p className={`mt-1 font-semibold ${trendUp ? 'text-green-600' : 'text-red-600'}`}>
         {trendUp ? '▲' : '▼'} {Math.abs(data.changePercent).toFixed(1)}% vs previous period
       </p>
@@ -236,8 +236,9 @@ const Dashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-slate-800">Administrator Dashboard</h1>
-        <p className="mt-2 text-slate-600">Anonymous insights into student well-being trends.</p>
+        <h1 className="text-3xl font-bold text-slate-800 dark:text-white">Administrator Dashboard</h1>
+        <p className="mt-2 text-slate-600 dark:text-slate-400">Anonymous insights into student well-being trends.</p>
+
       </div>
 
       <Card className="p-4">
@@ -255,7 +256,8 @@ const Dashboard: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="lg:col-span-2 p-6">
-          <h3 className="font-bold text-lg text-slate-700 mb-4">Mood Trends</h3>
+          <h3 className="font-bold text-lg text-slate-700 dark:text-slate-200 mb-4">
+Mood Trends</h3>
           {isLoading ? (
             <SectionSkeleton rows={4} />
           ) : isEmpty || moodData.length === 0 ? (
@@ -277,7 +279,8 @@ const Dashboard: React.FC = () => {
         </Card>
 
         <Card className="p-6">
-          <h3 className="font-bold text-lg text-slate-700 mb-4">Top Concerns (from AI Chat)</h3>
+          <h3 className="font-bold text-lg text-slate-700 dark:text-slate-200 mb-4">
+Top Concerns (from AI Chat)</h3>
           {isLoading ? (
             <SectionSkeleton rows={4} />
           ) : isEmpty || concernData.every(c => c.value === 0) ? (
@@ -308,8 +311,8 @@ const Dashboard: React.FC = () => {
       </div>
 
       <Card className="p-6">
-        <h3 className="font-bold text-lg text-slate-700">Most Accessed Resources</h3>
-        <p className="text-sm text-slate-500 mb-4">Total views per resource for the selected period, ranked, with change vs the previous period.</p>
+        <h3 className="font-bold text-lg text-slate-700 dark:text-slate-200">Most Accessed Resources</h3>
+        <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">Total views per resource for the selected period, ranked, with change vs the previous period.</p>
 
         {isLoading ? (
           <SectionSkeleton rows={5} />
@@ -332,13 +335,13 @@ const Dashboard: React.FC = () => {
               {rankedResources.map((r) => (
                 <li key={r.name} className="flex items-center justify-between py-2.5 text-sm">
                   <div className="flex items-center gap-3 min-w-0">
-                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold flex items-center justify-center">
                       {r.rank}
                     </span>
-                    <span className="font-medium text-slate-700 truncate">{r.name}</span>
+                    <span className="font-medium text-slate-700 dark:text-slate-200 truncate">{r.name}</span>
                   </div>
                   <div className="flex items-center gap-3 flex-shrink-0">
-                    <span className="text-slate-500">{r.usage.toLocaleString()} views</span>
+                    <span className="text-slate-500 dark:text-slate-400">{r.usage.toLocaleString()} views</span>
                     <TrendIndicator changePercent={r.changePercent} />
                   </div>
                 </li>

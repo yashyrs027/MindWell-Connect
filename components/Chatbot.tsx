@@ -53,18 +53,18 @@ const Chatbot: React.FC = () => {
 
   return (
     <div className="flex flex-col h-[calc(100vh-12rem)] max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold text-slate-800 mb-4 text-center">AI First-Aid Assistant</h1>
-      <p className="text-center text-slate-600 mb-6">This is a safe space to talk. I'm here to listen and offer support. Please note, I am not a replacement for a therapist.</p>
+      <h1 className="text-3xl font-bold text-slate-800 dark:text-white mb-4 text-center">AI First-Aid Assistant</h1>
+      <p className="text-center text-slate-600 dark:text-slate-300 mb-6">This is a safe space to talk. I'm here to listen and offer support. Please note, I am not a replacement for a therapist.</p>
       
       <Card className="flex-grow flex flex-col p-0">
-        <div className="flex-grow p-6 overflow-y-auto bg-slate-50 rounded-t-xl">
+        <div className="flex-grow p-6 overflow-y-auto bg-slate-50 dark:bg-slate-800 rounded-t-xl">
           <div className="space-y-4">
             {messages.map((msg) => (
               <div key={msg.id} className={`flex items-end gap-2 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                 {msg.sender === 'ai' && (
                   <div className="flex-shrink-0 h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-sm">M</div>
                 )}
-                <div className={`max-w-md px-4 py-3 rounded-2xl shadow-sm ${msg.sender === 'user' ? 'bg-blue-500 text-white rounded-br-none' : 'bg-white text-slate-700 rounded-bl-none'}`}>
+                <div className={`max-w-md px-4 py-3 rounded-2xl shadow-sm ${msg.sender === 'user' ? 'bg-blue-500 text-white rounded-br-none' : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-100 rounded-bl-none'}`}>
                   <p className="text-sm">{msg.text}</p>
                 </div>
               </div>
@@ -72,7 +72,7 @@ const Chatbot: React.FC = () => {
             {isLoading && (
               <div className="flex items-end gap-2 justify-start">
                 <div className="flex-shrink-0 h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-sm">M</div>
-                <div className="max-w-md px-4 py-3 rounded-2xl shadow-sm bg-white text-slate-700 rounded-bl-none">
+                <div className="max-w-md px-4 py-3 rounded-2xl shadow-sm bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-100 rounded-bl-none">
                   <Spinner />
                 </div>
               </div>
@@ -81,7 +81,7 @@ const Chatbot: React.FC = () => {
           </div>
         </div>
         
-        <div className="border-t border-slate-200 p-4 bg-white rounded-b-xl">
+        <div className="border-t border-slate-200 dark:border-slate-700 p-4 bg-white dark:bg-slate-900 rounded-b-xl">
           <div className="flex items-center space-x-2">
             <input
               type="text"
@@ -89,7 +89,7 @@ const Chatbot: React.FC = () => {
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Type your message..."
-              className="flex-grow w-full px-4 py-2 border border-slate-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
+              className="flex-grow w-full px-4 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
               disabled={isLoading}
             />
             <button

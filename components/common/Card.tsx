@@ -9,7 +9,7 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ children, className = '', onClick, ariaLabel }) => {
   const cardClasses = `
-    bg-white 
+    bg-white dark:bg-slate-800
     rounded-xl 
     shadow-md 
     overflow-hidden 

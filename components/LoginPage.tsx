@@ -31,7 +31,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigateToSignup, onNa
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 via-slate-50 to-purple-100 p-4">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 via-slate-50 to-purple-100 dark:from-slate-800 dark:via-slate-900 dark:to-slate-800 p-4">
       <Card className="max-w-md w-full text-center p-8 lg:p-12 shadow-2xl animate-fade-in-up">
         <button
           onClick={onNavigateToLanding}
@@ -47,23 +47,24 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigateToSignup, onNa
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
             <path d="M15.5 12.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zm3.5 4c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
           </svg>
-          <h1 className="text-3xl font-bold text-slate-800">MindWell Connect</h1>
+          <h1 className="text-3xl font-bold text-slate-800 dark:text-white">MindWell Connect</h1>
+
         </div>
-        <p className="text-slate-600 mb-8">Welcome back! Please sign in to your account.</p>
+        <p className="text-slate-600 dark:text-slate-400 mb-8">Welcome back! Please sign in to your account.</p>
         
         <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }} className="space-y-4">
-          <div className="flex border border-slate-200 rounded-lg p-1">
+          <div className="flex border border-slate-200 dark:border-slate-700 rounded-lg p-1">
             <button
               type="button"
               onClick={() => setRole('user')}
-              className={`w-1/2 py-2 rounded-md transition-colors duration-200 text-sm font-semibold ${role === 'user' ? 'bg-blue-500 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
+              className={`w-1/2 py-2 rounded-md transition-colors duration-200 text-sm font-semibold ${role === 'user' ? 'bg-blue-500 text-white' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'}`}
             >
               Student
             </button>
             <button
               type="button"
               onClick={() => setRole('admin')}
-              className={`w-1/2 py-2 rounded-md transition-colors duration-200 text-sm font-semibold ${role === 'admin' ? 'bg-slate-700 text-white' : 'text-slate-600 hover:bg-slate-100'}`}
+              className={`w-1/2 py-2 rounded-md transition-colors duration-200 text-sm font-semibold ${role === 'admin' ? 'bg-slate-700 text-white' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'}`}
             >
               Administrator
             </button>
@@ -77,7 +78,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigateToSignup, onNa
               onChange={(e) => { setEmail(e.target.value); clearError('email'); }}
               aria-invalid={!!errors.email}
               aria-describedby={errors.email ? 'email-error' : undefined}
-              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow text-left ${errors.email ? 'border-red-400' : 'border-slate-300'}`}
+              className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow text-left ${errors.email ? 'border-red-400' : 'border-slate-300 dark:border-slate-600'}`}
             />
             {errors.email && <p id="email-error" className="text-red-500 text-xs mt-1 text-left">{errors.email}</p>}
           </div>
@@ -101,7 +102,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigateToSignup, onNa
           </button>
         </form>
           
-        <p className="text-sm text-slate-500 mt-4">
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-4">
             Don't have an account?{' '}
             <button onClick={onNavigateToSignup} className="font-semibold text-blue-600 hover:underline">
               Sign up

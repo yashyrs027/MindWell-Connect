@@ -183,9 +183,8 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ slug, onBack }) => {
         {article.category}
       </span>
 
-      <h1 className="text-3xl font-bold text-slate-800 leading-tight">{article.title}</h1>
-
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-500 mt-3 pb-6 border-b border-slate-200">
+<h1 className="text-3xl font-bold text-slate-800 dark:text-white leading-tight">{article.title}</h1>
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-500 dark:text-slate-400 mt-3 pb-6 border-b border-slate-200 dark:border-slate-700">
         <span>By {article.author}</span>
         <span aria-hidden="true">&bull;</span>
         <span>Published {article.publishedDate}</span>
@@ -205,7 +204,7 @@ const ArticleDetail: React.FC<ArticleDetailProps> = ({ slug, onBack }) => {
 
       <div className="prose prose-slate max-w-none mt-6 space-y-4">
         {article.content.split('\n\n').map((paragraph, i) => (
-          <p key={i} className="text-slate-700 leading-relaxed">{paragraph}</p>
+          <p key={i} className="text-slate-700 dark:text-slate-300 leading-relaxed">{paragraph}</p>
         ))}
       </div>
     </div>
@@ -335,8 +334,9 @@ const Resources: React.FC = () => {
           >
             <img src={item.img} alt={item.title} className="w-full h-40 object-cover" />
             <div className="p-4">
-              <h3 className="font-bold text-lg text-slate-800 group-hover:text-blue-600 transition-colors">{item.title}</h3>
-              <p className="text-slate-600 text-sm mt-1">{item.desc}</p>
+              <h3 className="font-bold text-lg text-slate-800 dark:text-white  group-hover:text-blue-600 transition-colors">{item.title}</h3>
+             <p className="text-slate-600 dark:text-slate-400 text-sm mt-1">
+{item.desc}</p>
               <span className="inline-block text-sm font-semibold text-blue-600 mt-3 group-hover:underline">Read More →</span>
             </div>
           </Card>
@@ -358,8 +358,9 @@ const Resources: React.FC = () => {
               </div>
             </div>
             <div className="p-4">
-              <h3 className="font-bold text-lg text-slate-800 group-hover:text-blue-600 transition-colors">{item.title}</h3>
-              <p className="text-slate-600 text-sm mt-1">{item.desc}</p>
+              <h3 className="font-bold text-lg text-slate-800 dark:text-white  group-hover:text-blue-600 transition-colors">{item.title}</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm mt-1">
+{item.desc}</p>
             </div>
           </Card>
         ));
@@ -375,8 +376,9 @@ const Resources: React.FC = () => {
             >
               <div className="text-4xl mr-4 select-none">{item.icon}</div>
               <div className="flex-1 min-w-0 mr-3">
-                <h3 className="font-bold text-lg text-slate-800 truncate">{item.title}</h3>
-                <p className="text-slate-600 text-sm mt-0.5 line-clamp-2">{item.desc}</p>
+                <h3 className="font-bold text-lg text-slate-800  dark:text-white truncate">{item.title}</h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm mt-1">
+{item.desc}</p>
               </div>
               <button 
                 onClick={() => handleToggleAudio(index)}
@@ -417,10 +419,12 @@ const Resources: React.FC = () => {
       <audio ref={audioRef} preload="metadata" />
 
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-slate-800">Resource Hub</h1>
-        <p className="mt-2 text-slate-600">Knowledge and tools to empower your mental health journey.</p>
+        <h1 className="text-3xl font-bold text-slate-800 dark:text-white">Resource Hub</h1>
+        <p className="mt-2 text-slate-600 dark:text-slate-400">Knowledge and tools to empower your mental health journey.</p>
+
       </div>
-      <div className="flex justify-center border-b border-slate-200">
+      <div className="flex justify-center border-b border-slate-200 dark:border-slate-700">
+
         <TabButton label="Articles" isActive={activeTab === 'articles'} onClick={() => setActiveTab('articles')} />
         <TabButton label="Videos" isActive={activeTab === 'videos'} onClick={() => setActiveTab('videos')} />
         <TabButton label="Audio" isActive={activeTab === 'audio'} onClick={() => setActiveTab('audio')} />
@@ -563,7 +567,7 @@ interface TabButtonProps {
 }
 
 const TabButton: React.FC<TabButtonProps> = ({ label, isActive, onClick }) => (
-    <button onClick={onClick} className={`px-4 py-2 text-sm font-medium transition-colors duration-200 focus:outline-none ${isActive ? 'border-b-2 border-blue-500 text-blue-600' : 'text-slate-500 hover:text-blue-600'}`}>
+    <button onClick={onClick} className={`px-4 py-2 text-sm font-medium transition-colors duration-200 focus:outline-none ${isActive ? 'border-b-2 border-blue-500 text-blue-600': 'text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400'}`}>
         {label}
     </button>
 )

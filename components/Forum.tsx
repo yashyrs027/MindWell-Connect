@@ -228,15 +228,15 @@ const Forum: React.FC = () => {
         </button>
 
         <Card className="p-5 mb-6">
-          <h2 className="text-2xl font-bold text-slate-800">{selectedPost.title}</h2>
-          <p className="text-sm text-slate-500 mt-1">by {selectedPost.author} &bull; {selectedPost.timestamp}</p>
-          <p className="text-slate-700 mt-4">{selectedPost.content}</p>
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-white">{selectedPost.title}</h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">by {selectedPost.author} &bull; {selectedPost.timestamp}</p>
+          <p className="text-slate-700 dark:text-slate-200 mt-4">{selectedPost.content}</p>
           <div className="mt-4">
             <LikeButton post={selectedPost} onToggle={toggleLike} />
           </div>
         </Card>
 
-        <h3 className="text-lg font-bold text-slate-800 mb-3">
+        <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-3">
           {selectedPost.replyList?.length ?? 0} {selectedPost.replyList?.length === 1 ? 'Reply' : 'Replies'}
         </h3>
 
@@ -246,16 +246,16 @@ const Forum: React.FC = () => {
           ) : (
             selectedPost.replyList!.map(reply => (
               <Card key={reply.id} className="p-4">
-                <p className="text-sm font-semibold text-slate-700">{reply.author}</p>
-                <p className="text-slate-700 mt-1">{reply.content}</p>
-                <p className="text-xs text-slate-400 mt-2">{reply.timestamp}</p>
+                <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">{reply.author}</p>
+                <p className="text-slate-700 dark:text-slate-300 mt-1">{reply.content}</p>
+                <p className="text-xs text-slate-400 dark:text-slate-500 mt-2">{reply.timestamp}</p>
               </Card>
             ))
           )}
         </div>
 
         <Card className="p-5">
-          <label className="block text-sm font-semibold text-slate-700 mb-2">Add a reply</label>
+          <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2">Add a reply</label>
           <textarea
             placeholder="Write a supportive reply..."
             value={replyText}
@@ -265,8 +265,8 @@ const Forum: React.FC = () => {
             }}
             rows={3}
             aria-invalid={!!replyError}
-            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow resize-none ${
-              replyError ? 'border-red-400' : 'border-slate-300'
+            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow resize-none bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 ${
+              replyError ? 'border-red-400' : 'border-slate-300 dark:border-slate-600'
             }`}
           />
           {replyError && <p className="text-red-500 text-xs mt-1">{replyError}</p>}
@@ -284,8 +284,8 @@ const Forum: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold text-slate-800">Peer Support Forum</h1>
-        <p className="mt-2 text-slate-600">A space to connect, share, and support each other.</p>
+       <h1 className="text-3xl font-bold text-slate-800 dark:text-white">Peer Support Forum</h1>
+<p className="mt-2 text-slate-600 dark:text-slate-400">A space to connect, share, and support each other.</p>
       </div>
 
       <Card className="p-4 mb-6 bg-yellow-50 border-l-4 border-yellow-400">
@@ -311,9 +311,10 @@ const Forum: React.FC = () => {
       <div className="space-y-4">
         {posts.map(post => (
           <Card key={post.id} className="p-5" onClick={() => openPost(post.id)}>
-            <h3 className="text-xl font-bold text-blue-600 hover:underline">{post.title}</h3>
-            <p className="text-sm text-slate-500 mt-1">by {post.author} &bull; {post.timestamp}</p>
-            <p className="text-slate-700 mt-3 truncate">{post.content}</p>
+            
+<h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 hover:underline">{post.title}</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">by {post.author} &bull; {post.timestamp}</p>
+            <p className="text-slate-700 dark:text-slate-300 mt-3 truncate">{post.content}</p>
             <div className="mt-4 flex items-center justify-between">
               <span className="text-sm text-slate-600">{post.replyList?.length ?? post.replies} replies</span>
               <LikeButton post={post} onToggle={toggleLike} />
@@ -324,11 +325,11 @@ const Forum: React.FC = () => {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-8 animate-fade-in-up">
-            <h2 className="text-2xl font-bold text-slate-800 mb-6">Create New Post</h2>
+         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-lg p-8 animate-fade-in-up">
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-6">Create New Post</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Title</label>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">Title</label>
                 <input
                   type="text"
                   placeholder="Enter post title"
@@ -336,14 +337,14 @@ const Forum: React.FC = () => {
                   onChange={(e) => { setTitle(e.target.value); clearError('title'); }}
                   aria-invalid={!!errors.title}
                   aria-describedby={errors.title ? 'title-error' : undefined}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow ${
-                    errors.title ? 'border-red-400' : 'border-slate-300'
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 ${
+                    errors.title ? 'border-red-400' : 'border-slate-300 dark:border-slate-600'
                   }`}
                 />
                 {errors.title && <p id="title-error" className="text-red-500 text-xs mt-1">{errors.title}</p>}
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">Description</label>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">Description</label>
                 <textarea
                   placeholder="Share your thoughts..."
                   value={content}
@@ -351,8 +352,8 @@ const Forum: React.FC = () => {
                   rows={5}
                   aria-invalid={!!errors.content}
                   aria-describedby={errors.content ? 'content-error' : undefined}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow resize-none ${
-                    errors.content ? 'border-red-400' : 'border-slate-300'
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow resize-none bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-100 ${
+                    errors.content ? 'border-red-400' : 'border-slate-300 dark:border-slate-600'
                   }`}
                 />
                 {errors.content && <p id="content-error" className="text-red-500 text-xs mt-1">{errors.content}</p>}

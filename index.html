@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MindWell Connect</title>
     <script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+  };
+</script>
     <style>
       /* Custom scrollbar for a more subtle look */
       ::-webkit-scrollbar {
@@ -50,7 +55,7 @@
 </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="bg-slate-50 antialiased">
+ <body class="bg-slate-50 dark:bg-slate-900 antialiased transition-colors duration-200">
     <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
